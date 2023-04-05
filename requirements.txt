@@ -1,3 +1,4 @@
+aiohttp==3.8.1 # tested with 3.8.1
 ccxt>=1.66.32  # make sure that >=1.66.32
 exchange_calendars==3.6.3 # because raise exception with 4.1.1, success tested with 3.6.3
 gputil
@@ -5,12 +6,13 @@ gym>=0.17
 importlib-metadata==4.13.0
 jqdatasdk
 lz4
+
 # plot
 matplotlib
 multidict<5.0
+
 # data handling
 numpy>=1.17.3
-optuna # @ git+https://github.com/optuna/optuna.git@65b94b8f5bd75eb11492d6bec0ee4966e3a5962e
 pandas>=1.1.5
 
 #hooks
@@ -26,13 +28,12 @@ scikit-learn>=0.21.0
 shimmy>=0.2.1
 
 # packaging
-#setuptools>=41.4.0
-setuptools<67.0.0
+setuptools<67.0.0  # >67.0.0 doesn't work with gym => 0.21
 
-
-SQLAlchemy
+sb3-contrib
 stable-baselines3[extra]
-sb3-contrib # @ git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib@ce115982aa478e8f462d3d8d730c82b152d5255e
+optuna
+SQLAlchemy
 stockstats>=0.4.0
 swig
 
