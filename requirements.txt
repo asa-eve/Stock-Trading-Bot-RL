@@ -1,3 +1,6 @@
+# packaging
+setuptools<67.0.0  # >67.0.0 doesn't work with gym => 0.21
+
 aiohttp==3.8.1 # tested with 3.8.1
 ccxt>=1.66.32  # make sure that >=1.66.32
 exchange_calendars==3.6.3 # because raise exception with 4.1.1, success tested with 3.6.3
@@ -27,8 +30,6 @@ scikit-learn>=0.21.0
 
 shimmy>=0.2.1
 
-# packaging
-setuptools<67.0.0  # >67.0.0 doesn't work with gym => 0.21
 
 sb3-contrib
 stable-baselines3[extra]
