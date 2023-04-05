@@ -24,7 +24,8 @@ setup(
     author_email="accpavel1@gmail.com",
     url="https://github.com/asa-eve/Trading_Bot_RL",
     license="MIT",
-    packages=REQUIRES,
+    packages=find_packages(),
+    install_requires=REQUIRES,
     description="Trading Bot using Reinforcement Learning.",
     long_description="",
     classifiers=[
