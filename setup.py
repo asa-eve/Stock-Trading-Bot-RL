@@ -1,6 +1,10 @@
 from __future__ import annotations
 from setuptools import find_packages
 from setuptools import setup
+import subprocess
+
+# Gym doesn't work on version >=0.21 with 'new' setuptools
+subprocess.call(["pip", "install", "setuptools>=58.0.0,<67.0.0"])
 
 # Read requirements.txt, ignore comments
 try:
