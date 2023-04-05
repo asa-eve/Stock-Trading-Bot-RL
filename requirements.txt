@@ -20,6 +20,8 @@ pyfolio
 # testing requirements
 pytest
 
+stable-baselines3
+
 sb3-contrib @ git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib@ce115982aa478e8f462d3d8d730c82b152d5255e
 
 # Model Building Requirements
