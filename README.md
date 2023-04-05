@@ -5,19 +5,20 @@ Simple system for stock trading using Reinforcement Learning as decision-maker.
 Environment and some functions were modified from library [FinRL: Financial Reinforcement Learning](https://github.com/AI4Finance-Foundation/FinRL). 
 
 ## 🦾 **Project main features**
-- all RL algorithms for [Stable-Baselines-3](https://stable-baselines3.readthedocs.io/en/master/) are available (including **discrete** and **continious**)
-- added algorithms from [Stable-Baselines-3 Contrib](https://github.com/Stable-Baselines-Team/stable-baselines3-contrib) (PPO LSTM, TRPO, etc.) 
+- simple to install, fast to run, easy to understand
+- free choice of agent's action space (discrete or continious)
+- RL algorithms from [Stable-Baselines-3](https://stable-baselines3.readthedocs.io/en/master/) & [Stable-Baselines-3 Contrib](https://github.com/Stable-Baselines-Team/stable-baselines3-contrib) (PPO LSTM, TRPO, etc.) are available for usage
 - iterative training feature (for systems with low RAM) with changable seeds
+- ability to choose your own INDICATORS for RL model features
 - no requirement for active updates & works with Python >= 3.6
-- simple to install & easy run
-- ability to choose INDICATORS for training
 
 ## ⛓ **Some requirements**
 - for datasets - presence of next features with exact names ['date', 'open', 'high', 'low', 'close', 'volume']
 
 ## 🌧 **Current progress**
 - ✔ Simple stock trading 
-- - [x] Optuna hyperparameter tuning
+- - [x] Optuna hyperparameter tuning added
+- - [x] Forecasting model training feature added
 - - [x] Multiple stock trading
 
 
