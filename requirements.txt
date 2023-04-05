@@ -10,7 +10,7 @@ lz4
 matplotlib
 # data handling
 numpy>=1.17.3
-optuna @ git+https://github.com/optuna/optuna.git@65b94b8f5bd75eb11492d6bec0ee4966e3a5962e
+optuna # @ git+https://github.com/optuna/optuna.git@65b94b8f5bd75eb11492d6bec0ee4966e3a5962e
 pandas>=1.1.5
 
 #hooks
@@ -20,7 +20,7 @@ pyfolio
 # testing requirements
 pytest
 
-sb3-contrib @ git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib@ce115982aa478e8f462d3d8d730c82b152d5255e
+sb3-contrib # @ git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib@ce115982aa478e8f462d3d8d730c82b152d5255e
 
 # Model Building Requirements
 scikit-learn>=0.21.0
