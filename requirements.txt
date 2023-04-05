@@ -20,8 +20,6 @@ pyfolio
 # testing requirements
 pytest
 
-sb3-contrib # @ git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib@ce115982aa478e8f462d3d8d730c82b152d5255e
-
 # Model Building Requirements
 scikit-learn>=0.21.0
 
@@ -34,6 +32,7 @@ setuptools>=65.5.0
 
 SQLAlchemy
 stable-baselines3[extra]
+sb3-contrib # @ git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib@ce115982aa478e8f462d3d8d730c82b152d5255e
 stockstats>=0.4.0
 swig
 
