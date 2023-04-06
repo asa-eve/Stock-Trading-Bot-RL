@@ -8,5 +8,5 @@ Trading_Bot_RL
 │   	├── yahoodownloader.py
 │   	└── general.py
 │   ├── agent.py
-│   ├── env.py
+│   └── env.py
 ```
