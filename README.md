@@ -4,12 +4,14 @@ Simple system for stock trading using Reinforcement Learning as decision-maker.
 
 Environment and some functions were modified from library [FinRL: Financial Reinforcement Learning](https://github.com/AI4Finance-Foundation/FinRL). 
 
+Currently works only with SB3 and SB3-contrib.
+
 ## 🦾 **Project main features**
-- simple to install, fast to run, easy to understand
-- free choice of agent's action space (discrete or continious)
-- RL algorithms from [Stable-Baselines-3](https://stable-baselines3.readthedocs.io/en/master/) & [Stable-Baselines-3 Contrib](https://github.com/Stable-Baselines-Team/stable-baselines3-contrib) (PPO LSTM, TRPO, etc.) are available for usage
+- supports both discrete and continious action space RL algorithms
+- restoration of training process (from saved model)
 - iterative training feature (for systems with low RAM) with changable seeds
-- ability to choose your own INDICATORS for RL model features
+- changable RL model features (INDICATORS)
+- RL algorithms from [Stable-Baselines-3](https://stable-baselines3.readthedocs.io/en/master/) & [Stable-Baselines-3 Contrib](https://github.com/Stable-Baselines-Team/stable-baselines3-contrib) (PPO LSTM, TRPO, etc.) are available for usage
 - no requirement for active updates & works with Python >= 3.6
 
 ## ⛓ **Some requirements**
