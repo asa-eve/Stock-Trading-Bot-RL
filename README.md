@@ -4,7 +4,7 @@ Simple system for stock trading using Reinforcement Learning as decision-maker.
 
 Environment and some functions were modified from library [FinRL: Financial Reinforcement Learning](https://github.com/AI4Finance-Foundation/FinRL). 
 
-Currently works only with SB3 and SB3-contrib.
+Currently **works only with SB3 and SB3-contrib**.
 
 ## 🦾 **Project main features**
 - supports both discrete and continious action space RL algorithms
