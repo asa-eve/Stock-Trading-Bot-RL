@@ -425,9 +425,9 @@ def data_read_preprocessing_singleTIC(df_main_file,
         if valid_split: 
             return train, valid, trade, train_forecasts, valid_forecasts, trade_forecasts
         else: 
-            return train, trade, train_forecasts, trade_forecasts
+            return train, None, trade, train_forecasts, None, trade_forecasts
     else:
         if valid_split: 
-            return train, valid, trade
+            return train, valid, trade, None, None, None
         else: 
-            return train, trade
+            return train, None, trade, None, None, None
