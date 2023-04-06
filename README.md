@@ -15,14 +15,15 @@ Currently **works only with SB3 and SB3-contrib**.
 - no requirement for active updates & works with Python >= 3.6
 
 ## ⛓ **Some requirements**
-- for datasets - presence of next features with exact names ['date', 'open', 'high', 'low', 'close', 'volume']
+- Datasets
+  - column names - exact names -> ['date', 'open', 'high', 'low', 'close', 'volume']
 
-## 🌧 **Current progress**
+## 🌧 **Current build**
 - ✔ Simple stock trading 
-- - [x] Implement proper threshold usage
-- - [x] Optuna hyperparameter tuning added
-- - [x] Forecasting model training feature added
-- - [x] Multiple stock trading
+- - [x] Threshold exploit (risk management)
+- - [x] Optuna Tuning
+- - [x] Forecasting Model Code
+- - [x] Multiple Stock Trading
 
 
 ## 💻 Installation and Running 
@@ -35,21 +36,17 @@ Download and run 1 of example codes (via command):
 ```
 Trading_Bot_RL
 ├── trading_bot_rl (main folder)
-│   ├── functions
+│   ├── agent.py
+│   ├── env.py
+│   └── functions
 │   	├── callbacks.py
 │   	├── data_preprocessing.py
 │   	├── env_functions.py
-|     ├── yahoodownloader.py
+│   	├── yahoodownloader.py
 │   	└── general.py
-│   ├── agent.py
-│   ├── env.py
 ├── code_examples
-│   ├── main_iterative_training.ipynb
 ├── datasets
-│   ├── ...
 ├── trained_models
-│   ├── <model_name>
-│   	├── ... 
 ├── setup.py
 ├── requirements.txt
 └── README.md
