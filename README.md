@@ -9,10 +9,10 @@ Currently **works only with SB3 and SB3-contrib**.
 ## 🦾 **Project main features**
 - supports both discrete and continious action space RL algorithms
 - restoration of training process (from saved model)
-- iterative training feature (for systems with low RAM) with changable seeds
-- changable RL model features (INDICATORS)
+- iterative training feature with changable seeds (for systems with low RAM)
+- changable custom features for RL (called INDICATORS)
 - RL algorithms from [Stable-Baselines-3](https://stable-baselines3.readthedocs.io/en/master/) & [Stable-Baselines-3 Contrib](https://github.com/Stable-Baselines-Team/stable-baselines3-contrib) (PPO LSTM, TRPO, etc.) are available for usage
-- no requirement for active updates & works with Python >= 3.6
+- works with any Python version >= 3.6
 
 ## ⛓ **Some requirements**
 - Datasets
