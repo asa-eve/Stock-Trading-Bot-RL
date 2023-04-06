@@ -17,6 +17,7 @@ Environment and some functions were modified from library [FinRL: Financial Rein
 
 ## 🌧 **Current progress**
 - ✔ Simple stock trading 
+- - [x] Implement proper threshold usage
 - - [x] Optuna hyperparameter tuning added
 - - [x] Forecasting model training feature added
 - - [x] Multiple stock trading
