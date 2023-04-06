@@ -5,7 +5,7 @@ Trading_Bot_RL
 │   	├── callbacks.py
 │   	├── data_preprocessing.py
 │   	├── env_functions.py
-|     ├── yahoodownloader.py
+│   	├── yahoodownloader.py
 │   	└── general.py
 │   ├── agent.py
 │   ├── env.py
