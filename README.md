@@ -1,6 +1,6 @@
 # 🤖 Trading_Bot_RL
 
-Simple system for stock trading using Reinforcement Learning as decision-maker. 
+Simple Stock trading bot using offline Reinforcement Learning for decision making.
 
 Environment and some functions were modified from library [FinRL: Financial Reinforcement Learning](https://github.com/AI4Finance-Foundation/FinRL). 
 
