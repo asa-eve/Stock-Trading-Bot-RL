@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from stockstats import StockDataFrame as Sdf
 from trading_bot_rl.functions.yahoodownloader import YahooDownloader
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 INDICATORS = [
     "macd",
@@ -16,17 +17,6 @@ INDICATORS = [
     "close_30_sma",
     "close_60_sma",
 ]
-
-# ----------------------------------------------------------------------------------------------------------------------------------
-
-def load_dataset(*, file_name: str) -> pd.DataFrame:
-    """
-    load csv dataset from path
-    :return: (df) pandas dataframe
-    """
-    # _data = pd.read_csv(f"{config.DATASET_DIR}/{file_name}")
-    _data = pd.read_csv(file_name)
-    return _data
 
 # ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -47,6 +37,62 @@ def convert_to_datetime(time):
     time_fmt = "%Y-%m-%dT%H:%M:%S"
     if isinstance(time, str):
         return datetime.datetime.strptime(time, time_fmt)
+    
+    
+# ----------------------------------------------------------------------------------------------------------------------------------
+def perform_date_cyclic_encoding(dataset):
+    dataset['date'] = pd.to_datetime(dataset['date'])
+    dataset = pd.concat([dataset.drop('date', axis=1), 
+                         pd.DataFrame({'date_sin': np.sin(2 * np.pi * dataset['date'].dt.dayofyear / 365),
+                                       'date_cos': np.cos(2 * np.pi * dataset['date'].dt.dayofyear / 365)})],
+                       axis=1)
+    current_order = dataset.columns.tolist()
+    new_order = current_order[-2:] + current_order[:-2]
+    dataset = dataset.reindex(columns=new_order)
+    return dataset
+                                 
+# ----------------------------------------------------------------------------------------------------------------------------------
+
+def numerical_columns_scaling(scaler_name, train, trade, valid = None):
+    columns_to_scale = train.select_dtypes(include=['int', 'float']).columns.tolist()
+    if scaler_name == 'MinMax':
+        scaler = MinMaxScaler()
+    elif scaler_name == 'Standard':
+        scaler = StandardScaler()
+    for col in columns_to_scale:
+        train[col] = scaler.fit_transform(train[col].values.reshape(-1, 1))
+        trade[col] = scaler.transform(trade[col].values.reshape(-1, 1))
+        if valid != None: valid[col] = scaler.transform(valid[col].values.reshape(-1, 1))
+    return train, trade, valid
+
+# ----------------------------------------------------------------------------------------------------------------------------------                                 
+                                 
+def BOOL_TO_INT_FUNCTION(dataset):
+    for i in range(len(dataset.columns)):
+            if dataset[dataset.columns[i]].dtype == 'bool':
+                dataset = dataset.astype({dataset.columns[i]:'int'})
+    return dataset
+
+# ----------------------------------------------------------------------------------------------------------------------------------    
+
+def data_loading(df_file, tic_name):
+    df = pd.read_csv(df_file)
+    if 'tic' not in df.columns:
+        df['tic'] = tic_name
+    return df
+
+# ----------------------------------------------------------------------------------------------------------------------------------    
+    
+def adding_vix_tirbulence_sort(fe, df_main):
+    # Adding 'vix', 'turbulence' (if True)
+    df_main = fe.preprocess_data(df_main)
+
+    # Sorting columns
+    f = (df_main.columns.tolist())
+    for x in (['date', 'tic', 'open','high','low','close','volume']):
+        f.remove(x)
+    df_main = df_main[(['date', 'tic', 'open','high','low','close','volume']) + f]
+    return df_main
 
 # ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -335,7 +381,7 @@ def data_read_preprocessing_singleTIC(df_main_file,
                                       tic_name='',
                                       valid_split=False,
                                       BOOL_TO_INT=True):
-
+    
     fe = FeatureEngineer(
                         use_technical_indicator=tech_indicators_usage,
                         use_vix=use_vix,
@@ -343,83 +389,174 @@ def data_read_preprocessing_singleTIC(df_main_file,
                         user_defined_feature = user_defined_feature)
     
     
-    # Loading Data with Forecasts Features
-    if df_forecasts_file != None:
-        df_raw_forecasts = pd.read_csv(df_forecasts_file)
-        if 'tic' not in df_raw_forecasts.columns:
-            df_raw_forecasts['tic'] = tic_name
-    
-    
-    # Loading normal Data
-    df_raw = pd.read_csv(df_main_file)
-    if 'tic' not in df_raw.columns:
-        df_raw['tic'] = tic_name
+    # Loading Data
+    if df_forecasts_file != None:  df_raw_forecasts = data_loading(df_forecasts_file, tic_name)
+    df_raw = data_loading(df_main_file, tic_name)
         
-
+    # Sorting columns + adding 'vix', 'turbulence' (if true)
     if df_forecasts_file != None:
-        df_main = df_raw_forecasts
+        df_main = adding_vix_tirbulence_sort(fe, df_raw_forecasts)
     else:
-        df_main = df_raw
-        
-
-    # Adding 'vix', 'turbulence'
-    df_main = fe.preprocess_data(df_main)
-
-    # Sorting columns
-    f = (df_main.columns.tolist())
-    for x in ['date','tic','open','high','low','close','volume']:
-        f.remove(x)
-
-    df_main = df_main[['date','tic','open','high','low','close','volume'] + f]
-
-    # Splitting by pct 
+        df_main = adding_vix_tirbulence_sort(fe, df_raw)
+                                 
+     # Splitting by pct 
     if valid_split:
         TRAIN_START_DATE, TRAIN_END_DATE, VALID_START_DATE, VALID_END_DATE, TRADE_START_DATE, TRADE_END_DATE = data_date_pct_split(df_main, test_and_valid_pct, valid_split)
     else:
         TRAIN_START_DATE, TRAIN_END_DATE, _, _, TRADE_START_DATE, TRADE_END_DATE = data_date_pct_split(df_main, test_and_valid_pct, valid_split)
 
-    print('train_forecasts ', TRAIN_START_DATE, ' ', TRAIN_END_DATE)
-    if valid_split: print('valid_forecasts ', VALID_START_DATE, ' ', VALID_END_DATE)
-    print('trade_forecasts ', TRADE_START_DATE, ' ', TRADE_END_DATE)
-
-
+    #--------
+    print('train ', TRAIN_START_DATE, ' ', TRAIN_END_DATE)
+    if valid_split: print('valid ', VALID_START_DATE, ' ', VALID_END_DATE)
+    print('trade ', TRADE_START_DATE, ' ', TRADE_END_DATE)
+    #--------
+    
+    # Split data by 'date'
     train = data_split(df_main, TRAIN_START_DATE, TRAIN_END_DATE)
     trade = data_split(df_main, TRADE_START_DATE, TRADE_END_DATE)
     if valid_split: valid = data_split(df_main, VALID_START_DATE, VALID_END_DATE)
 
+    # Bools to 'int'
     if BOOL_TO_INT:
-        for i in range(len(train.columns)):
-            if train[train.columns[i]].dtype == 'bool':
-                train = train.astype({train.columns[i]:'int'})
-                trade = trade.astype({trade.columns[i]:'int'})
-                if valid_split: valid = valid.astype({valid.columns[i]:'int'})    
+        train = BOOL_TO_INT_FUNCTION(train)
+        trade = BOOL_TO_INT_FUNCTION(trade)
+        if valid_split: valid = BOOL_TO_INT_FUNCTION(valid)     
+        
 
     if df_forecasts_file != None:
+        # then first dataset was forecasting -> saving results first
         train_forecasts = train
         trade_forecasts = trade
         if valid_split: valid_forecasts = valid
         
-        df_main = df_raw  
+        # Sorting columns + adding 'vix', 'turbulence' (if true)
+        df_main = adding_vix_tirbulence_sort(fe, df_raw) 
         
-        # Adding 'vix', 'turbulence'
-        df_main = fe.preprocess_data(df_main)
-
-        # Sorting columns
-        f = (df_main.columns.tolist())
-        for x in ['date','tic','open','high','low','close','volume']:
-            f.remove(x)
-
-        df_main = df_main[['date','tic','open','high','low','close','volume'] + f]
-        
-
+        #--------
         print('train ', TRAIN_START_DATE, ' ', TRAIN_END_DATE)
         if valid_split: print('valid ', VALID_START_DATE, ' ', VALID_END_DATE)
         print('trade ', TRADE_START_DATE, ' ', TRADE_END_DATE)
-
-
+        #--------
+        
+        # Splitting data
         train = data_split(df_main, TRAIN_START_DATE, TRAIN_END_DATE)
         trade = data_split(df_main, TRADE_START_DATE, TRADE_END_DATE)
         if valid_split: valid = data_split(df_main, VALID_START_DATE, VALID_END_DATE)
+
+        # Bools to 'int'
+        if BOOL_TO_INT:
+            train = BOOL_TO_INT_FUNCTION(train)
+            trade = BOOL_TO_INT_FUNCTION(trade)
+            if valid_split: valid = BOOL_TO_INT_FUNCTION(valid)    
+    
+    if df_forecasts_file != None:
+        if valid_split: 
+            return train, valid, trade, train_forecasts, valid_forecasts, trade_forecasts
+        else: 
+            return train, None, trade, train_forecasts, None, trade_forecasts
+    else:
+        if valid_split: 
+            return train, valid, trade, None, None, None
+        else: 
+            return train, None, trade, None, None, None
+                                 
+# ----------------------------------------------------------------------------------------------------------------------------------                                 
+
+# df_main, df_forecasts, test_and_valid_pct, {'tic_name': 'SPY', 'use_vix': 'True/False','use_turbulence': 'True/False','user_defined_feature': 'True/False', 'tech_indicators_usage': 'True/False'}
+def data_read_preprocessing_singleTIC_normalized_encoded(df_main_file,
+                                      df_forecasts_file=None,
+                                      test_and_valid_pct=0.1,
+                                      tech_indicators_usage=False,
+                                      use_vix=False,
+                                      use_turbulence=False,
+                                      user_defined_feature=False,
+                                      tic_name='',
+                                      valid_split=False,
+                                      BOOL_TO_INT=True,
+                                      scaler='MinMax'):
+    
+    fe = FeatureEngineer(
+                    use_technical_indicator=tech_indicators_usage,
+                    use_vix=use_vix,
+                    use_turbulence=use_turbulence,
+                    user_defined_feature = user_defined_feature)
+    
+    
+    # Loading Data
+    if df_forecasts_file != None:  df_raw_forecasts = data_loading(df_forecasts_file, tic_name)
+    df_raw = data_loading(df_main_file, tic_name)
+        
+    # Sorting columns + adding 'vix', 'turbulence' (if true)
+    if df_forecasts_file != None:
+        df_main = adding_vix_tirbulence_sort(fe, df_raw_forecasts)
+    else:
+        df_main = adding_vix_tirbulence_sort(fe, df_raw)
+                                 
+     # Splitting by pct 
+    if valid_split:
+        TRAIN_START_DATE, TRAIN_END_DATE, VALID_START_DATE, VALID_END_DATE, TRADE_START_DATE, TRADE_END_DATE = data_date_pct_split(df_main, test_and_valid_pct, valid_split)
+    else:
+        TRAIN_START_DATE, TRAIN_END_DATE, _, _, TRADE_START_DATE, TRADE_END_DATE = data_date_pct_split(df_main, test_and_valid_pct, valid_split)
+
+    #--------
+    print('train ', TRAIN_START_DATE, ' ', TRAIN_END_DATE)
+    if valid_split: print('valid ', VALID_START_DATE, ' ', VALID_END_DATE)
+    print('trade ', TRADE_START_DATE, ' ', TRADE_END_DATE)
+    #--------
+    
+    # Split data by 'date'
+    train = data_split(df_main, TRAIN_START_DATE, TRAIN_END_DATE)
+    trade = data_split(df_main, TRADE_START_DATE, TRADE_END_DATE)
+    if valid_split: valid = data_split(df_main, VALID_START_DATE, VALID_END_DATE)
+
+    # Scaling + Encoding
+    train, trade, valid = numerical_columns_scaling(scaler, train, trade, valid) if valid_split else numerical_columns_scaling(scaler, train, trade)
+
+    # Cyclic encoding of 'date' column
+    train = perform_date_cyclic_encoding(train)
+    trade = perform_date_cyclic_encoding(trade)
+    if valid_split: valid = perform_date_cyclic_encoding(valid)
+
+    # Bools to 'int'
+    if BOOL_TO_INT:
+        train = BOOL_TO_INT_FUNCTION(train)
+        trade = BOOL_TO_INT_FUNCTION(trade)
+        if valid_split: valid = BOOL_TO_INT_FUNCTION(valid)   
+
+    if df_forecasts_file != None:
+        # Saving data (if forecasted -> it was first)
+        train_forecasts = train
+        trade_forecasts = trade
+        if valid_split: valid_forecasts = valid
+        
+        # Sorting columns + adding 'vix', 'turbulence' (if true)
+        df_main = adding_vix_tirbulence_sort(fe, df_raw)
+        
+        #--------
+        print('train ', TRAIN_START_DATE, ' ', TRAIN_END_DATE)
+        if valid_split: print('valid ', VALID_START_DATE, ' ', VALID_END_DATE)
+        print('trade ', TRADE_START_DATE, ' ', TRADE_END_DATE)
+        #--------
+
+        # Split data by 'date'
+        train = data_split(df_main, TRAIN_START_DATE, TRAIN_END_DATE)
+        trade = data_split(df_main, TRADE_START_DATE, TRADE_END_DATE)
+        if valid_split: valid = data_split(df_main, VALID_START_DATE, VALID_END_DATE)
+
+        # Scaling + Encoding
+        train, trade, valid = numerical_columns_scaling(scaler, train, trade, valid) if valid_split else numerical_columns_scaling(scaler, train, trade)
+
+        # Cyclic encoding of 'date' column
+        train = perform_date_cyclic_encoding(train)
+        trade = perform_date_cyclic_encoding(trade)
+        if valid_split: valid = perform_date_cyclic_encoding(valid)
+
+        # Bools to 'int'
+        if BOOL_TO_INT:
+            train = BOOL_TO_INT_FUNCTION(train)
+            trade = BOOL_TO_INT_FUNCTION(trade)
+            if valid_split: valid = BOOL_TO_INT_FUNCTION(valid)     
+                                 
   
     if df_forecasts_file != None:
         if valid_split: 
