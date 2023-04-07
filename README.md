@@ -1,4 +1,4 @@
-# 🤖 Trading_Bot_RL
+# 🤖 Stock Trading Bot using offline Reinforcement Learning
 
 Simple Stock trading bot using offline Reinforcement Learning for decision making.
 
