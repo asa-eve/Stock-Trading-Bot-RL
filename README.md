@@ -34,6 +34,18 @@ Download and run 1 of example codes (via command):
 !wget https://raw.github.com/asa-eve/Trading_Bot_RL/main/code_examples/main_iterative_training.ipynb
 ```
 
+## 🧠 Things to keep in mind while using
+- Length of iteration
+ - short length might not be enough but long might create an 'overfit' to the train data (or the noise in it)
+ - **you should consider average - the best way is to start with long and slowly decrease the length**
+- Evaluate performance metrics
+ - consider checking 'perfomance' on validation to get grasp on how good the model generalize the data
+- Hyperparameters
+ - remember that hyperparameter tuning might not strongly affect the perfomance
+ - at the end of the day the most important parameters are the ones that affect - learning rate, neural networks, batch memory storages
+- 
+
+
 ## 📃 File Structure
 ```
 Trading_Bot_RL
