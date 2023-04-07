@@ -20,6 +20,8 @@ Currently **works only with SB3 and SB3-contrib**.
 
 ## 🌧 **Current build**
 - ✔ Simple stock trading 
+- - [x] Custom policy networks (RNN, CNN)
+- - [x] Resolved problem with gradients in DDPG, TD3, SAC
 - - [x] Threshold exploit (risk management)
 - - [x] Optuna Tuning
 - - [x] Forecasting Model Code
