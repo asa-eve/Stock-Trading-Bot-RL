@@ -29,10 +29,11 @@ Currently **works only with SB3 and SB3-contrib**.
 
 
 ## 💻 Installation and Running 
-Download and run 1 of example codes (via command):
+Download the package:
 ```
 !wget https://raw.github.com/asa-eve/Trading_Bot_RL/main/code_examples/main_iterative_training.ipynb
 ```
+Use code that is located in 'code examples' folder.
 
 ## 🧠 Things to keep in mind while using
 - Iteration length
