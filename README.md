@@ -36,14 +36,19 @@ Download and run 1 of example codes (via command):
 
 ## 🧠 Things to keep in mind while using
 - Length of iteration
- - short length might not be enough but long might create an 'overfit' to the train data (or the noise in it)
- - **you should consider average - the best way is to start with long and slowly decrease the length**
+  - short is not enough - but long might creates 'overfit' to the train (mostly to the noise)
+  - **consider something average - start with long and slowly decrease**
 - Evaluate performance metrics
- - consider checking 'perfomance' on validation to get grasp on how good the model generalize the data
+  - consider checking 'perfomance' on validation - to get grasp on how good the model generalizes the data
 - Hyperparameters
- - remember that hyperparameter tuning might not strongly affect the perfomance
- - at the end of the day the most important parameters are the ones that affect - learning rate, neural networks, batch memory storages
-- 
+  - hyperparameter tuning might not strongly affect the outcome perfomance
+  - the most important parameters - learning rate, neural networks, batch memory storages size
+- Reward function
+  - the most influential thing in RL
+  - think carefully on how to define it - the agent always has a ways to surprise you in finding ways to cheat it
+- State space (features choice)
+  - it's important to consider what really affect the result and what's not
+  - remove as much 'noisy' features as you can - unnecessary features greatly increase the complexity of the agent learning task
 
 
 ## 📃 File Structure
