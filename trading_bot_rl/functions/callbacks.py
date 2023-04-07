@@ -8,9 +8,9 @@ def checkpoint_callback(eval_save_freq, save_path='./models_saved_checkpointcall
 #-------------------------------------------------------------------------------------------------------------------------------------------------------        
 
 # deterministic (deterministic actions for evaluation)
-def eval_callback(eval_env, eval_steps_freq, best_model_save_path='./models_saved_evalcallback/'):
+def eval_callback(eval_env, eval_freq, best_model_save_path='./models_saved_evalcallback/'):
     return EvalCallback(eval_env, best_model_save_path=best_model_save_path,
-                             log_path=best_model_save_path, eval_freq=eval_steps_freq,
+                             log_path=best_model_save_path, eval_freq=eval_freq,
                              deterministic=False, render=False)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------        

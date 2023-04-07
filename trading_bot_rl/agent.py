@@ -46,6 +46,8 @@ class DRLAgent:
             
         print(model_kwargs)
         
+        if model_name == "lstm_ppo": policy = "MlpLstmPolicy"
+        
         return MODELS[model_name](
             policy=policy,
             env=self.env,

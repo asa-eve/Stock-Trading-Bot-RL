@@ -40,6 +40,7 @@ class StockTradingEnv(gym.Env):
         model_name="",
         mode="",
         iteration="",
+        seed=int,
     ):
         self.day = day
         self.df = df
@@ -83,7 +84,7 @@ class StockTradingEnv(gym.Env):
         self.turbulence = 0
         self.cost = 0
         self.trades = 0
-        self.episode = 0
+        self.episode = 1
         # memorize all the total balance change
         self.asset_memory = [
             self.initial_amount
@@ -100,7 +101,7 @@ class StockTradingEnv(gym.Env):
         self.date_memory = [self._get_date()]
         #         self.logger = Logger('results',[CSVOutputFormat])
         # self.reset()
-        self._seed()
+        self.seed(seed)
 
     def _sell_stock(self, index, action):
         def _do_sell_normal():
@@ -129,7 +130,8 @@ class StockTradingEnv(gym.Env):
                         * sell_num_shares
                         * self.sell_cost_pct[index]
                     )
-                    self.trades += 1
+                    if sell_num_shares != 0:
+                        self.trades += 1
                 else:
                     sell_num_shares = 0
             else:
@@ -197,7 +199,9 @@ class StockTradingEnv(gym.Env):
                 self.cost += (
                     self.state[index + 1] * buy_num_shares * self.buy_cost_pct[index]
                 )
-                self.trades += 1
+                
+                if buy_num_shares != 0:
+                    self.trades += 1
             else:
                 buy_num_shares = 0
 
@@ -299,7 +303,7 @@ class StockTradingEnv(gym.Env):
             # logger.record("environment/total_reward_pct", (tot_reward / (end_total_asset - tot_reward)) * 100)
             # logger.record("environment/total_cost", self.cost)
             # logger.record("environment/total_trades", self.trades)
-
+            self.episode += 1
             return self.state, self.reward, self.terminal, {}
 
         else:
@@ -400,7 +404,7 @@ class StockTradingEnv(gym.Env):
         self.actions_memory = []
         self.date_memory = [self._get_date()]
 
-        self.episode += 1
+        #self.episode += 1
 
         return self.state
 
@@ -554,7 +558,7 @@ class StockTradingEnv(gym.Env):
             df_actions = pd.DataFrame({"date": date_list, "actions": action_list})
         return df_actions
 
-    def _seed(self, seed=None):
+    def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
