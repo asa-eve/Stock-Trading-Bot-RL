@@ -35,10 +35,11 @@ Download and run 1 of example codes (via command):
 ```
 
 ## 🧠 Things to keep in mind while using
-- Length of iteration
+- Iteration length
   - short is not enough - but long might creates 'overfit' to the train (mostly to the noise)
   - **consider something average - start with long and slowly decrease**
-- Evaluate performance metrics
+  - full learning process of a single model might take hours, days or even weeks (depending on the task)
+- Performance metrics
   - consider checking 'perfomance' on validation - to get grasp on how good the model generalizes the data
 - Hyperparameters
   - hyperparameter tuning might not strongly affect the outcome perfomance
@@ -49,6 +50,8 @@ Download and run 1 of example codes (via command):
 - State space (features choice)
   - it's important to consider what really affect the result and what's not
   - remove as much 'noisy' features as you can - unnecessary features greatly increase the complexity of the agent learning task
+- RL algorithms
+  - try out most popular algorithms (PPO, A2C, DQN, DDPG) - there's no need to check every single one of them
 
 
 ## 📃 File Structure
