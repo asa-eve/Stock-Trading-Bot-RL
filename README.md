@@ -41,6 +41,7 @@ Download and run 1 of example codes (via command):
   - full learning process of a single model might take hours, days or even weeks (depending on the task)
 - Performance metrics
   - consider checking 'perfomance' on validation - to get grasp on how good the model generalizes the data
+  - but don't forget - metrics are good but **total reward your best guide**
 - Hyperparameters
   - hyperparameter tuning might not strongly affect the outcome perfomance
   - the most important parameters - learning rate, neural networks, batch memory storages size
