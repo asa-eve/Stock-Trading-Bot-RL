@@ -31,17 +31,30 @@ Depending on dataset you might find the problem of finding optimal solution - it
 - active Trading
 - passive Trending
 
-With 'Trading' we want for agent to focus more on the number of trades and money, while with 'Trending' agent's task is only to maximize the total earnings. In 1st case we want to define reward to help agent trade more actively:
+With 'Trading' we want for agent to focus more on the number of trades and money, while with 'Trending' agent's task is only to maximize the total earnings. 
+
+In 1st case we want to define reward to help agent trade more actively:
 ```
 self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling  *  (self.trades / self.day)   *  <coefficient_of_trading>
 ```
-For "LSTM PPO" from "SB3 contrib" it gave a huge growth of perfomance from the start of the training process. That coefficient could be tuned (by Optuna) in order to find optimal model for the particular dataset.
+For "LSTM PPO" from "SB3 contrib" it gave a huge growth of perfomance at early stages of the training process. That coefficient could be tuned (by Optuna) in order to find optimal model for the particular dataset.
 
 In 'Trending' case the reward look simplier:
 ```
 self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling
 ```
 The training process might rapidly slow and after some time (depending on the data - could be days or even weeks) it will come to the conclusion of using 'trend'. After that if no additional 'coefficients' were added to the reward for keeping trend - an agent might start to 'trade' if the environment isn't changing. 
+
+**Exploration vs. Exploitation** - you should also keep in mind that the task might challenge an agent in finding "optimal solution" - so there are some hyperparemeters that should be kept in mind:
+- entropy coefficient
+    - could help to EXPLORE environment more (by adding random actions)
+- clipping
+    - could help to EXPLOIT the strategy (from 0 to 1)
+- regularization
+    - sometimes it's hard to get a good perfomance on 'train' and 'test' - meaning generalization is bad - adding L2 or dropout regularization could help
+- batch size
+    - larger batch size - faster learning, more memory usage, more stable and smooth training and convergence - but also reduced exploration and chances of overfitting
+
 
 ## 🧠 Things to keep in mind while using
 - Iteration length
@@ -53,7 +66,7 @@ The training process might rapidly slow and after some time (depending on the da
   - but don't forget - metrics are good but **total reward your best guide**
 - Hyperparameters
   - hyperparameter tuning might not strongly affect the outcome perfomance
-  - the most important parameters - learning rate, neural networks, batch memory storages size
+  - the most important parameters - learning rate, neural networks, batch memory storages size, parameters of "Explore vs Exploit" (clipping, entropy)
 - Reward function
   - the most influential thing in RL
   - think carefully on how to define it - the agent always has a ways to surprise you in finding ways to cheat it
