@@ -26,6 +26,24 @@ Download the package:
 ```
 Use code that is located in 'code examples' folder.
 
+Every model will be saved and taken from 'dataset' folder with next names of both model folder and model archive:
+```
+# MODEL FOLDER NAME
+---
+dataset name example = ^GSPC_ta_my_features
+dataset forecasts name example = ^GSPC_ta_my_features_with_forecasts_LSTM_1_120
+
+model_folder_name = <dataset_name>__<dataset_forecasts_prefix>__<data % on which testing done>__<Normalization and Encoding used>
+example: ^GSPC_ta_my_features__with_forecasts_LSTM_1_120__Test15__NormEncdFalse
+---
+
+# FILE MODEL NAME
+---
+model_file_name = <model_name>__<length of iteration>__<length of training in 1 iteration>__<lr>__<seed fixed or no>
+example: LSTM_PPO__iterationEp30__trainedEp30__lr0.0001__seed1
+---
+```
+
 ## 🌧 **Trend vs Trade** or **"How to make learning process faster"**
 Depending on dataset you might find the problem of finding optimal solution - it would be displayed through 'time required to train' and jumps in agent's perfomance metric - that means agent tries to choose between 2 strategies:
 - active Trading
