@@ -266,6 +266,7 @@ class StockTradingEnv(gym.Env):
                 print(f"total_reward: {tot_reward:0.2f}")
                 print(f"total_cost: {self.cost:0.2f}")
                 print(f"total_trades: {self.trades}")
+                print(f"total_agent_reward: {np.sum(self.rewards_memory)}")
                 if df_total_value["daily_return"].std() != 0:
                     print(f"Sharpe: {sharpe:0.3f}")
                 print("=================================")
@@ -364,8 +365,9 @@ class StockTradingEnv(gym.Env):
             self.asset_memory.append(end_total_asset)
             self.date_memory.append(self._get_date())
             self.reward = end_total_asset - begin_total_asset
+            #self.rewards_memory.append(self.reward)
+            self.reward = self.reward * self.reward_scaling # * (self.trades/self.day) * 2./10 
             self.rewards_memory.append(self.reward)
-            self.reward = self.reward * self.reward_scaling
             self.state_memory.append(
                 self.state
             )  # add current state in state_recorder for each step

@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from stockstats import StockDataFrame as Sdf
 from trading_bot_rl.functions.yahoodownloader import YahooDownloader
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
 
 INDICATORS = [
     "macd",
@@ -42,7 +42,7 @@ def convert_to_datetime(time):
 # ----------------------------------------------------------------------------------------------------------------------------------
 def perform_date_cyclic_encoding(dataset):
     dataset['date'] = pd.to_datetime(dataset['date'])
-    dataset = pd.concat([dataset.drop('date', axis=1), 
+    dataset = pd.concat([dataset, 
                          pd.DataFrame({'date_sin': np.sin(2 * np.pi * dataset['date'].dt.dayofyear / 365),
                                        'date_cos': np.cos(2 * np.pi * dataset['date'].dt.dayofyear / 365)})],
                        axis=1)
@@ -59,10 +59,13 @@ def numerical_columns_scaling(scaler_name, train, trade, valid = None):
         scaler = MinMaxScaler()
     elif scaler_name == 'Standard':
         scaler = StandardScaler()
-    for col in columns_to_scale:
-        train[col] = scaler.fit_transform(train[col].values.reshape(-1, 1))
-        trade[col] = scaler.transform(trade[col].values.reshape(-1, 1))
-        if valid != None: valid[col] = scaler.transform(valid[col].values.reshape(-1, 1))
+    elif scaler_name == 'Robust':
+        scaler = RobustScaler()
+    if scaler_name != None:
+        for col in columns_to_scale:
+            train[col] = scaler.fit_transform(train[col].values.reshape(-1, 1))
+            trade[col] = scaler.transform(trade[col].values.reshape(-1, 1))
+            if valid != None: valid[col] = scaler.transform(valid[col].values.reshape(-1, 1))
     return train, trade, valid
 
 # ----------------------------------------------------------------------------------------------------------------------------------                                 
@@ -380,7 +383,8 @@ def data_read_preprocessing_singleTIC(df_main_file,
                                       user_defined_feature=False,
                                       tic_name='',
                                       valid_split=False,
-                                      BOOL_TO_INT=True):
+                                      BOOL_TO_INT=True,
+                                      scaler=''): # scaler not used anywhere
     
     fe = FeatureEngineer(
                         use_technical_indicator=tech_indicators_usage,
@@ -473,7 +477,7 @@ def data_read_preprocessing_singleTIC_normalized_encoded(df_main_file,
                                       tic_name='',
                                       valid_split=False,
                                       BOOL_TO_INT=True,
-                                      scaler='MinMax'):
+                                      scaler=''):
     
     fe = FeatureEngineer(
                     use_technical_indicator=tech_indicators_usage,
