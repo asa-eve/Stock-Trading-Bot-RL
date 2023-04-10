@@ -6,7 +6,10 @@ Environment and some functions were modified from library [FinRL: Financial Rein
 
 Currently **works only with SB3 and SB3-contrib**.
 
-For more detailed [explanations and clues on how to solve Stock Trading task using RL.](https://github.com/asa-eve/Stock-Trading-Bot-RL/tree/main/trading_bot_rl#-trend-vs-trade-or-how-to-make-learning-process-faster)
+[Problems and clues on how to work with Stock Trading task in Reinforcement Learning:](https://github.com/asa-eve/Stock-Trading-Bot-RL/tree/main/trading_bot_rl#-trend-vs-trade-or-how-to-make-learning-process-faster)
+- Trend vs. Trade [finding perfect reward function]
+- Exploration vs. Exploitation [achieve perfect balance]
+- Hints on what's important in RL
 
 ## 🦾 **Project main features**
 - supports both discrete and continious action space RL algorithms
