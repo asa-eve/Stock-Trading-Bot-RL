@@ -58,6 +58,13 @@ The training process might rapidly slow and after some time (depending on the da
 **The perfect model of RL for Stock Trading** - a number of models should be trained that would be able to perfectly fill the interval between [Trading ; Trending] (using some coefficient in, for example, reward function). A single model would give an output (might be an action) which would be used in final model as a feature. The final model then by having INDICATORS and outputs from models will decide on what action to choose, meaning the main problem of 'Stock Trading' task using RL lies (probably) in finding exact spot between tasks, choosing an action according to that and train all these models in the short period of time.
 
 ## 🧠 Things to keep in mind while using
+- Generalization of the problem
+  - try to make both 'train' and 'test' ('valid') datasets be representable for agent 
+  - they should contain various situations (of possible and wanted in the task)
+  - data should make perfect sense in helping an agent in making 'generalization' possible
+- Features amount
+  - there's no need in packing all features into the dataset - use feature selection
+  - the more features there are - the longer training process will be
 - Iteration length
   - short is not enough - but long might creates 'overfit' to the train (mostly to the noise)
   - **consider something average - start with long and slowly decrease**
