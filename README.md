@@ -1,15 +1,15 @@
 # 🤖 Stock Trading Bot
 
-Simple Stock trading bot using offline Reinforcement Learning for decision making.
+- Simple Stock trading bot using offline Reinforcement Learning for decision making.
 
-Environment and some functions were modified from library [FinRL: Financial Reinforcement Learning](https://github.com/AI4Finance-Foundation/FinRL). 
+- Environment and some functions were modified from library [FinRL: Financial Reinforcement Learning](https://github.com/AI4Finance-Foundation/FinRL). 
 
-Currently **works only with SB3 and SB3-contrib**.
+- Currently **works only with SB3 and SB3-contrib**.
 
-[Problems and clues on how to work with Stock Trading task in Reinforcement Learning:](https://github.com/asa-eve/Stock-Trading-Bot-RL/tree/main/trading_bot_rl#-trend-vs-trade-or-how-to-make-learning-process-faster)
-- Trend vs. Trade [finding perfect reward function]
-- Exploration vs. Exploitation [achieve perfect balance]
-- Hints on what's important in RL
+- [Problems and clues on how to work with Stock Trading task in Reinforcement Learning:](https://github.com/asa-eve/Stock-Trading-Bot-RL/tree/main/trading_bot_rl#-trend-vs-trade-or-how-to-make-learning-process-faster)
+  - Trend vs. Trade [finding perfect reward function]
+  - Exploration vs. Exploitation [achieve perfect balance]
+  - Hints on what's important in RL
 
 ## 🦾 **Project main features**
 - supports both discrete and continious action space RL algorithms
