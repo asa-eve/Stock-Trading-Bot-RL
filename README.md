@@ -63,6 +63,12 @@ self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling
 ```
 The training process might rapidly slow and after some time (depending on the data - could be days or even weeks) it will come to the conclusion of using 'trend'. After that if no additional 'coefficients' were added to the reward for keeping trend - an agent might start to 'trade' if the environment isn't changing. 
 
+One more intresting example of reward would look like this:
+```
+self.reward = self.reward_scaling * (trade_profit * trade_weight + trend_profit * trend_weight)
+```
+The task obviously would be to tune 'trade_weight' and 'trend_weight' values.
+
 **Exploration vs. Exploitation** - you should also keep in mind that the task might challenge an agent in finding "optimal solution" - so there are some hyperparemeters that should be kept in mind:
 - entropy coefficient
     - could help to EXPLORE environment more (by adding random actions)
