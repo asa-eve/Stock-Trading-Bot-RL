@@ -45,30 +45,33 @@ example: LSTM_PPO__iterationEp30__trainedEp30__lr0.0001__seed1
 ```
 
 ## 🌧 **Trend vs Trade** or **"How to make learning process faster"**
+--
 Depending on dataset you might find the problem of finding optimal solution - it would be displayed through 'time required to train' and jumps in agent's perfomance metric - that means agent tries to choose between 2 strategies:
 - active Trading
 - passive Trending
 
-With 'Trading' we want for agent to focus more on the number of trades and money, while with 'Trending' agent's task is only to maximize the total earnings. 
 
+With 'Trading' we want for agent to focus more on the number of trades and money, while with 'Trending' agent's task is only to maximize the total earnings. 
+___
 In 1st case we want to define reward to help agent trade more actively:
 ```
 self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling  *  (self.trades / self.day)   *  <coefficient_of_trading>
 ```
 For "LSTM PPO" from "SB3 contrib" it gave a huge growth of perfomance at early stages of the training process. That coefficient could be tuned (by Optuna) in order to find optimal model for the particular dataset.
-
+____
 In 'Trending' case the reward look simplier:
 ```
 self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling
 ```
 The training process might rapidly slow and after some time (depending on the data - could be days or even weeks) it will come to the conclusion of using 'trend'. After that if no additional 'coefficients' were added to the reward for keeping trend - an agent might start to 'trade' if the environment isn't changing. 
-
+___
 One more intresting example of reward would look like this:
 ```
 self.reward = self.reward_scaling * (trade_profit * trade_weight + trend_profit * trend_weight)
 ```
 The task obviously would be to tune 'trade_weight' and 'trend_weight' values.
 
+___
 **Exploration vs. Exploitation** - you should also keep in mind that the task might challenge an agent in finding "optimal solution" - so there are some hyperparemeters that should be kept in mind:
 - entropy coefficient
     - could help to EXPLORE environment more (by adding random actions)
