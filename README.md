@@ -55,7 +55,7 @@ The training process might rapidly slow and after some time (depending on the da
 - batch size
     - larger batch size - faster learning, more memory usage, more stable and smooth training and convergence - but also reduced exploration and chances of overfitting
 
-**The perfect model of RL for Stock Trading** - a number of models should be trained that would be able to perfectly fill the interval between [Trading ; Trending] (using some coefficient in, for example, reward function). A single model would give an output (might be an action) which would be used in final model as a feature. The final model then by having INDICATORS and outputs from models will decide on what action to choose, meaning the main problem of 'Stock Trading' task using RL lies (probably) in finding exact spot between tasks, choosing an action according to that and train all these models in short period of time.
+**The perfect model of RL for Stock Trading** - a number of models should be trained that would be able to perfectly fill the interval between [Trading ; Trending] (using some coefficient in, for example, reward function). A single model would give an output (might be an action) which would be used in final model as a feature. The final model then by having INDICATORS and outputs from models will decide on what action to choose, meaning the main problem of 'Stock Trading' task using RL lies (probably) in finding exact spot between tasks, choosing an action according to that and train all these models in the short period of time.
 
 ## 🧠 Things to keep in mind while using
 - Iteration length
