@@ -45,7 +45,6 @@ example: LSTM_PPO__iterationEp30__trainedEp30__lr0.0001__seed1
 ```
 
 ## 🌧 **Trend vs Trade** or **"How to make learning process faster"**
---
 Depending on dataset you might find the problem of finding optimal solution - it would be displayed through 'time required to train' and jumps in agent's perfomance metric - that means agent tries to choose between 2 strategies:
 - active Trading
 - passive Trending
