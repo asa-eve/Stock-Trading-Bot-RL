@@ -1,4 +1,4 @@
-# 🤖 Stock Trading Bot using offline Reinforcement Learning
+# 🤖 Stock Trading Bot
 
 Simple Stock trading bot using offline Reinforcement Learning for decision making.
 
@@ -14,19 +14,10 @@ Currently **works only with SB3 and SB3-contrib**.
 - RL algorithms from [Stable-Baselines-3](https://stable-baselines3.readthedocs.io/en/master/) & [Stable-Baselines-3 Contrib](https://github.com/Stable-Baselines-Team/stable-baselines3-contrib) (PPO LSTM, TRPO, etc.) are available for usage
 - works with any Python version >= 3.6
 
-## ⛓ **Some requirements**
-- Datasets
-  - column names - exact names -> ['date', 'open', 'high', 'low', 'close', 'volume']
-
-## 🌧 **Current build**
-- ✔ Simple stock trading 
-- - [x] Custom policy networks (RNN, CNN)
-- - [x] Resolved problem with gradients in DDPG, TD3, SAC
-- - [x] Threshold exploit (risk management)
-- - [x] Optuna Tuning
-- - [x] Forecasting Model Code
-- - [x] Multiple Stock Trading
-
+## ⛓ **Package - requirements, problems and hints**
+- Requirement - dataset must contain next exact column names  ---> ['date', 'open', 'high', 'low', 'close', 'volume']
+- Problem     - vanishing gradients in netx methods           ---> DDPG, TD3, SAC
+- Hint        - use RNN with LSTM layers to gain more perfomance
 
 ## 💻 Installation and Running 
 Download the package:
@@ -34,6 +25,23 @@ Download the package:
 !wget https://raw.github.com/asa-eve/Trading_Bot_RL/main/code_examples/main_iterative_training.ipynb
 ```
 Use code that is located in 'code examples' folder.
+
+## 🌧 **Trend vs Trade** or **"How to make learning process faster"**
+Depending on dataset you might find the problem of finding optimal solution - it would be displayed through 'time required to train' and jumps in agent's perfomance metric - that means agent tries to choose between 2 strategies:
+- active Trading
+- passive Trending
+
+With 'Trading' we want for agent to focus more on the number of trades and money, while with 'Trending' agent's task is only to maximize the total earnings. In 1st case we want to define reward to help agent trade more actively:
+```
+self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling  *  (self.trades / self.day)   *  <coefficient_of_trading>
+```
+For "LSTM PPO" from "SB3 contrib" it gave a huge growth of perfomance from the start of the training process. That coefficient could be tuned (by Optuna) in order to find optimal model for the particular dataset.
+
+In 'Trending' case the reward look simplier:
+```
+self.reward = (end_total_asset - begin_total_asset) * self.reward_scaling
+```
+The training process might rapidly slow and after some time (depending on the data - could be days or even weeks) it will come to the conclusion of using 'trend'. After that if no additional 'coefficients' were added to the reward for keeping trend - an agent might start to 'trade' if the environment isn't changing. 
 
 ## 🧠 Things to keep in mind while using
 - Iteration length
